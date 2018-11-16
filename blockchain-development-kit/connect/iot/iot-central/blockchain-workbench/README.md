@@ -418,7 +418,7 @@ which is able to connect Azure IoT Central to Azure Blockchain Workbench:
     variable**.
 
 3.  For **Name,** specify “TimestampInt.” For **Type**, specify **Integer**. For
-    **Value**, specify “ticks(triggerBody()['timestamp'])” under **Expression**.
+    **Value**, specify “div(sub(ticks(triggerBody()['timestamp']),ticks('1970-01-01')),10000000)” under **Expression**.
 
     ![](media/05b2f798fc3e5c27a41887be60563ccd.png)
 
@@ -590,31 +590,43 @@ which is able to connect Azure IoT Central to Azure Blockchain Workbench:
 
 4.  Choose **Add an action** to add a new step.
 
-5.  In **Search connectors and actions**, enter and select **Apply to each**.
+5.  In **Search connectors and actions**, enter and select **Initialize variable**.
 
-6.  For **Select an output from previous steps**, specify **Table1** under
+6. For **Name,** specify “HumidityInt.” For **Type**, specify **Integer**. For
+    **Value**, specify “int(split(string(triggerBody()?['device']?['measurements']?['telemetry']?['Humidity']),'.')[0])” under **Expression**.
+    
+7. Choose **Add an action** to add a new step.
+
+8.  In **Search connectors and actions**, enter and select **Initialize variable**.
+
+9. For **Name,** specify “TemperatureInt.” For **Type**, specify **Integer**. For
+    **Value**, specify “int(split(string(triggerBody()?['device']?['measurements']?['telemetry']?['Temperature']),'.')[0])” under **Expression**.
+    
+10.  In **Search connectors and actions**, enter and select **Apply to each**.
+
+11.  For **Select an output from previous steps**, specify **Table1** under
     **Parse JSON**.
 
-7.  Within **Apply to each** step, choose **Add an action**.
+12.  Within **Apply to each** step, choose **Add an action**.
 
-8.  In **Search connectors and actions**, enter **Service Bus** and select
+13.  In **Search connectors and actions**, enter **Service Bus** and select
     **Send message**.
 
-9.  Specify the Service Bus action to connect and use the Service Bus resource
+14.  Specify the Service Bus action to connect and use the Service Bus resource
     deployed as part of Azure Blockchain Workbench. Note, when specifying the
     Service Bus connection string, make sure you use a policy with a **Manage**
     claim. To get the Service Bus connection string, choose **Shared access
     Policies** under **Settings** of the Service Bus resource. Select the
     appropriate policy and copy the appropriate connection string.
 
-10. For **Queue/Topic name**, specify **activityhub (queue)**.
+15. For **Queue/Topic name**, specify **activityhub (queue)**.
 
-11. For **Session Id**, specify **RequestId** under **Variables** in **Dynamic
+16. For **Session Id**, specify **RequestId** under **Variables** in **Dynamic
     content**.
 
     ![](media/f524ff688d4262bb7743ef7e6b793c25.png)
 
-12. For **Content**, copy and paste the following JSON:
+17. For **Content**, copy and paste the following JSON:
 
 {
 
@@ -656,7 +668,7 @@ which is able to connect Azure IoT Central to Azure Blockchain Workbench:
 
 "name": "timestamp",
 
-"value":
+"value": ""
 
 }
 
